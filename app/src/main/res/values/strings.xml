@@ -2,5 +2,9 @@
     <string name="app_name">Video Player</string>
 
     <string name="home_fragment_title">Home fragment</string>
+    <string name="play_button">Play Video</string>
+    <string name="broadcast_button">Start Broadcast</string>
+
     <string name="video_fragment_title">Video fragment</string>
+
 </resources>
