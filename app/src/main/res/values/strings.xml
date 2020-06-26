@@ -5,6 +5,8 @@
     <string name="play_button">Play Video</string>
     <string name="broadcast_button">Start Broadcast</string>
 
-    <string name="video_fragment_title">Video fragment</string>
+    <string name="broadcast_fragment_title">Broadcastfragment</string>
+
+    <string name="buffering">Loading video…</string>
 
 </resources>

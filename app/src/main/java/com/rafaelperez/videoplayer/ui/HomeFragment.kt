@@ -19,9 +19,15 @@ class HomeFragment : Fragment() {
         val binding: FragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val viewModel: HomeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         binding.viewModel = viewModel
-        viewModel.goToVideoView.observe(viewLifecycleOwner, Observer {
+        viewModel.goToBroadcastView.observe(viewLifecycleOwner, Observer {
             if (it) {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVideoFragment())
+                viewModel.reset()
+            }
+        })
+        viewModel.goToVideoView.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVideoPlayerFragment())
                 viewModel.reset()
             }
         })

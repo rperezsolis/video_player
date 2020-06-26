@@ -12,15 +12,26 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_videoFragment"
-            app:destination="@id/videoFragment"
+            app:destination="@id/broadcastFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
-        android:id="@+id/videoFragment"
-        android:name="com.rafaelperez.videoplayer.ui.VideoFragment"
+        android:id="@+id/broadcastFragment"
+        android:name="com.rafaelperez.videoplayer.ui.BroadcastFragment"
         android:label="fragment_video"
-        tools:layout="@layout/fragment_video" />
+        tools:layout="@layout/fragment_broadcast" />
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.rafaelperez.videoplayer.ui.VideoPlayerFragment"
+        android:label="VideoPlayerFragment" />
 </navigation>

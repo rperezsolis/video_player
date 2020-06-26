@@ -2,28 +2,22 @@ package com.rafaelperez.videoplayer.ui
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.snackbar.Snackbar
-import com.google.common.util.concurrent.ListenableFuture
 import com.rafaelperez.videoplayer.R
-import com.rafaelperez.videoplayer.databinding.FragmentVideoBinding
-import java.lang.Exception
-import java.util.jar.Manifest
+import com.rafaelperez.videoplayer.databinding.FragmentBroadcastBinding
 
-class VideoFragment : Fragment() {
-    private lateinit var binding: FragmentVideoBinding
+class BroadcastFragment : Fragment() {
+    private lateinit var binding: FragmentBroadcastBinding
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
@@ -31,14 +25,12 @@ class VideoFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video, container, false)
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_broadcast, container, false)
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
-
         return binding.root
     }
 
