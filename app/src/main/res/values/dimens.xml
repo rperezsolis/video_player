@@ -8,6 +8,7 @@
     <dimen name="big_space">20dp</dimen>
     <dimen name="medium_space">12dp</dimen>
     <dimen name="small_space">8dp</dimen>
+    <dimen name="smallest_space">4dp</dimen>
 
     <dimen name="icon_size">24dp</dimen>
     <dimen name="chat_elements">44dp</dimen>

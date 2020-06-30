@@ -30,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -74,22 +75,25 @@
 
             <ImageView
                 android:id="@+id/sendButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/chat_elements"
+                android:layout_height="@dimen/chat_elements"
+                android:padding="@dimen/small_space"
                 android:visibility="gone"
-                app:srcCompat="@android:drawable/ic_menu_send" />
+                app:srcCompat="@drawable/ic_send" />
 
             <ImageView
                 android:id="@+id/likeReaction"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                android:layout_width="@dimen/chat_elements"
+                android:layout_height="@dimen/chat_elements"
+                android:padding="@dimen/smallest_space"
+                app:srcCompat="@drawable/ic_reaction_like" />
 
             <ImageView
                 android:id="@+id/loveReaction"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                android:layout_width="@dimen/chat_elements"
+                android:layout_height="@dimen/chat_elements"
+                android:padding="@dimen/smallest_space"
+                app:srcCompat="@drawable/ic_reaction_love" />
         </LinearLayout>
     </HorizontalScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
