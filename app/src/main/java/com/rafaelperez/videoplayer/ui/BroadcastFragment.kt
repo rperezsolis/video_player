@@ -49,6 +49,7 @@ class BroadcastFragment : Fragment() {
                 cameraProvider.unbindAll()
                 val camera = cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview)
                 preview.setSurfaceProvider(binding.previewView.createSurfaceProvider(camera.cameraInfo))
+                binding.chatBroadcast.initTimer()
             }, ContextCompat.getMainExecutor(requireContext())
         )
     }

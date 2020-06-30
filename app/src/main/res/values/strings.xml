@@ -5,8 +5,18 @@
     <string name="play_button">Play Video</string>
     <string name="broadcast_button">Start Broadcast</string>
 
-    <string name="broadcast_fragment_title">Broadcastfragment</string>
+    <string name="broadcast_fragment_title">Broadcast fragment</string>
 
     <string name="buffering">Loading video…</string>
+
+    <string name="share">Share</string>
+
+    <string name="write_comment">Write a comment…</string>
+
+    <string name="write_url_indication">Insert video url</string>
+
+    <string name="write_url_hint">Write video url</string>
+
+    <string name="play_video">Play video</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.widget.MediaController
 import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.rafaelperez.videoplayer.R
 import com.rafaelperez.videoplayer.databinding.FragmentVideoPlayerBinding
@@ -19,16 +20,16 @@ import com.rafaelperez.videoplayer.databinding.FragmentVideoPlayerBinding
 class VideoPlayerFragment : Fragment() {
     private lateinit var binding: FragmentVideoPlayerBinding
     private var currentPosition = 0
+    private val args: VideoPlayerFragmentArgs by navArgs()
 
     companion object {
-        private const val VIDEO_SAMPLE = "https://developers.google.com/training/images/tacoma_narrows.mp4"
         private const val PLAYBACK_TIME = "play_time";
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video_player, container, false)
         if (savedInstanceState != null) {
-            currentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
+            currentPosition = savedInstanceState.getInt(PLAYBACK_TIME)
         }
         val controller = MediaController(requireContext())
         controller.setMediaPlayer(binding.videoView)
@@ -61,9 +62,9 @@ class VideoPlayerFragment : Fragment() {
 
     private fun initializePlayer() {
         binding.videoStatus.visibility = VideoView.VISIBLE
-        val videoPath: Uri? = getMedia(VIDEO_SAMPLE)
+        val videoPath: Uri? = getMedia(args.videoUrl)
         if (videoPath!=null) {
-            binding.videoView.setVideoPath(VIDEO_SAMPLE)
+            binding.videoView.setVideoPath(args.videoUrl)
             binding.videoView.setOnPreparedListener {
                 binding.videoStatus.visibility = VideoView.INVISIBLE
                 if (currentPosition>0) {
@@ -72,6 +73,7 @@ class VideoPlayerFragment : Fragment() {
                     binding.videoView.seekTo(1)
                 }
                 binding.videoView.start()
+                binding.chatVideo.initTimer()
             }
             binding.videoView.setOnCompletionListener {
                 binding.videoView.seekTo(0)
