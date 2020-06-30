@@ -1,15 +1,19 @@
 package com.rafaelperez.videoplayer.ui.chat
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Path
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rafaelperez.videoplayer.R
@@ -19,7 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ChatView : LinearLayout {
+class ChatView : ConstraintLayout {
 
     private lateinit var mView: View
     private lateinit var adapter: ChatAdapter
@@ -27,7 +31,9 @@ class ChatView : LinearLayout {
 
     companion object {
         val sdf = SimpleDateFormat("mm:ss")
-        val userPictureUrl = "https://avatars0.githubusercontent.com/u/43014319?s=460&u=3e607d82f27337b91a94afb2b585eb19429fe7cb&v=4"
+        const val userPictureUrl = "https://avatars0.githubusercontent.com/u/43014319?s=460&u=3e607d82f27337b91a94afb2b585eb19429fe7cb&v=4"
+        const val LIKE_REACTION = 0
+        const val LOVE_REACTION = 2
     }
 
     constructor(context: Context) : super(context){
@@ -68,6 +74,14 @@ class ChatView : LinearLayout {
         mView.shareButton.setOnClickListener {
             share()
         }
+
+        mView.likeReaction.setOnClickListener {
+            runAnim(LIKE_REACTION)
+        }
+
+        mView.loveReaction.setOnClickListener {
+            runAnim(LOVE_REACTION)
+        }
     }
 
     fun initTimer() {
@@ -94,5 +108,27 @@ class ChatView : LinearLayout {
         }
         val shareIntent = Intent.createChooser(sendIntent, null)
         context.startActivity(shareIntent)
+    }
+
+    private fun runAnim(reaction: Int) {
+        val view = ImageView(context)
+        when (reaction) {
+            LIKE_REACTION -> view.setImageResource(R.drawable.ic_reaction_like)
+            LOVE_REACTION -> view.setImageResource(R.drawable.ic_reaction_love)
+        }
+        (mView as ConstraintLayout).addView(view)
+        val screenWidth = context.resources.displayMetrics.widthPixels.toFloat()
+        val screenHeight = context.resources.displayMetrics.heightPixels.toFloat()/2
+        val path1 = Path().apply {
+            arcTo(screenWidth/4, screenHeight/2, screenWidth*3/4, screenHeight, 0f, -90f, false)
+            addArc(screenWidth/4, 0f, screenWidth*3/4, screenHeight/2, 90f, 180f)
+        }
+        val animator = ObjectAnimator.ofFloat(view, View.X, View.Y, path1).apply {
+            duration = 5000
+            start()
+        }
+        animator.doOnEnd {
+            (mView as ConstraintLayout).removeView(view)
+        }
     }
 }
