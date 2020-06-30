@@ -9,6 +9,7 @@
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/interactionBar"
         tools:listitem="@layout/chat_item" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/interactionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_space"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -29,19 +31,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/shareButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/share" />
+                android:layout_height="@dimen/chat_elements"
+                android:orientation="horizontal"
+                android:background="@drawable/oval_shape_translucent"
+                android:layout_margin="@dimen/small_space"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_share_arrow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/small_text"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/small_space"/>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/commentEditText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/chat_elements"
                 android:hint="@string/write_comment"
                 android:inputType="text"
-                android:maxWidth="230dp" />
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="@dimen/small_text"
+                android:maxWidth="200dp"
+                android:layout_margin="@dimen/small_space"
+                android:background="@drawable/oval_shape_translucent" />
 
             <ImageView
                 android:id="@+id/sendButton"

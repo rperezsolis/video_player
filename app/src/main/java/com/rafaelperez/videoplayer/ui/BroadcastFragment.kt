@@ -10,13 +10,14 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.rafaelperez.videoplayer.R
 import com.rafaelperez.videoplayer.databinding.FragmentBroadcastBinding
 
-class BroadcastFragment : Fragment() {
+
+class BroadcastFragment : FullScreenFragment() {
     private lateinit var binding: FragmentBroadcastBinding
 
     companion object {
@@ -30,6 +31,9 @@ class BroadcastFragment : Fragment() {
             startCamera()
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+        }
+        binding.closeButton.setOnClickListener {
+            findNavController().navigateUp()
         }
         return binding.root
     }

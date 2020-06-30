@@ -11,13 +11,24 @@
         <androidx.camera.view.PreviewView
             android:id="@+id/previewView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+        </androidx.camera.view.PreviewView>
 
         <com.rafaelperez.videoplayer.ui.chat.ChatView
             android:id="@+id/chatBroadcast"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="@dimen/chat_elements"
+            android:layout_height="@dimen/chat_elements"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/previewView"
+            app:layout_constraintTop_toTopOf="@+id/previewView"
+            app:srcCompat="@drawable/ic_close" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

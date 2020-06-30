@@ -16,10 +16,15 @@
         tools:context=".ui.HomeFragment">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/navVideoScreenButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/play_button"
+            android:textAllCaps="false"
+            android:background="@drawable/oval_shape_gradient"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/medium_text"
+            android:padding="@dimen/medium_space"
             android:onClick="@{() -> viewModel.navigateToVideoView()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,15 +32,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/navBroadcastScreenButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@string/broadcast_button"
+            android:textAllCaps="false"
+            android:background="@drawable/oval_shape_gradient"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/medium_text"
+            android:padding="@dimen/medium_space"
             android:onClick="@{() -> viewModel.navigateToBroadcastView()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button2" />
+            app:layout_constraintTop_toBottomOf="@+id/navVideoScreenButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

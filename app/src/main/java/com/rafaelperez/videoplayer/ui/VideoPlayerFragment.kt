@@ -10,14 +10,14 @@ import android.webkit.URLUtil
 import android.widget.MediaController
 import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.rafaelperez.videoplayer.R
 import com.rafaelperez.videoplayer.databinding.FragmentVideoPlayerBinding
 
 
-class VideoPlayerFragment : Fragment() {
+class VideoPlayerFragment : FullScreenFragment() {
     private lateinit var binding: FragmentVideoPlayerBinding
     private var currentPosition = 0
     private val args: VideoPlayerFragmentArgs by navArgs()
@@ -34,7 +34,9 @@ class VideoPlayerFragment : Fragment() {
         val controller = MediaController(requireContext())
         controller.setMediaPlayer(binding.videoView)
         binding.videoView.setMediaController(controller)
-
+        binding.closeButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         return binding.root
     }
 

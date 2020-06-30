@@ -1,4 +1,4 @@
-package com.rafaelperez.videoplayer.viewmodel
+package com.rafaelperez.videoplayer.util
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
