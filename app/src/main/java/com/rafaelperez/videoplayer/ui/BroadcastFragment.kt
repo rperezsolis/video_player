@@ -2,6 +2,7 @@ package com.rafaelperez.videoplayer.ui
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +33,16 @@ class BroadcastFragment : FullScreenFragment() {
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
+        val chatView = binding.chatBroadcast
+        val metrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
+        chatView.layoutParams.height = metrics.heightPixels/2
+        chatView.requestLayout();
+
         binding.closeButton.setOnClickListener {
             findNavController().navigateUp()
         }
+
         return binding.root
     }
 

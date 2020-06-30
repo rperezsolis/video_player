@@ -18,7 +18,8 @@
         <com.rafaelperez.videoplayer.ui.chat.ChatView
             android:id="@+id/chatBroadcast"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageView
             android:id="@+id/closeButton"

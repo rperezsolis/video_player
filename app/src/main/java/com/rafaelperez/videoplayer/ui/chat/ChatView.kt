@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -44,7 +45,7 @@ class ChatView : LinearLayout {
     private fun init(context: Context, attrs: AttributeSet?) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mView = inflater.inflate(R.layout.chat_view, this)
-        val recyclerView = (mView.findViewById(R.id.chatRecyclerView)) as RecyclerView
+        val recyclerView = mView.findViewById(R.id.chatRecyclerView) as RecyclerView
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.stackFromEnd = true

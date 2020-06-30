@@ -3,6 +3,7 @@ package com.rafaelperez.videoplayer.ui
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,9 +35,16 @@ class VideoPlayerFragment : FullScreenFragment() {
         val controller = MediaController(requireContext())
         controller.setMediaPlayer(binding.videoView)
         binding.videoView.setMediaController(controller)
+        val chatView = binding.chatVideo
+        val metrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
+        chatView.layoutParams.height = metrics.heightPixels/2
+        chatView.requestLayout();
+
         binding.closeButton.setOnClickListener {
             findNavController().navigateUp()
         }
+
         return binding.root
     }
 
