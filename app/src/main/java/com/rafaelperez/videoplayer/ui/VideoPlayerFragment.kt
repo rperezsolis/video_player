@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
+import android.widget.FrameLayout
 import android.widget.MediaController
 import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
@@ -40,6 +41,7 @@ class VideoPlayerFragment : FullScreenFragment() {
         requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
         chatView.layoutParams.height = metrics.heightPixels/2
         chatView.requestLayout();
+        setSystemUIListener()
 
         binding.closeButton.setOnClickListener {
             findNavController().navigateUp()
@@ -99,5 +101,18 @@ class VideoPlayerFragment : FullScreenFragment() {
 
     private fun releasePlayer() {
         binding.videoView.stopPlayback()
+    }
+
+    private fun setSystemUIListener() {
+        activity?.window?.decorView?.setOnSystemUiVisibilityChangeListener { visibility ->
+            val layoutParams = view?.layoutParams as FrameLayout.LayoutParams?
+            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+                // The system bars are visible
+                layoutParams?.bottomMargin = resources.getDimension(R.dimen.full_screen_bottom_margin_space).toInt()
+            } else {
+                layoutParams?.bottomMargin = 0
+            }
+            view?.layoutParams = layoutParams
+        }
     }
 }

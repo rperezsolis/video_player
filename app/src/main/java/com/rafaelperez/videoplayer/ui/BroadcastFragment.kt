@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -37,7 +38,8 @@ class BroadcastFragment : FullScreenFragment() {
         val metrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
         chatView.layoutParams.height = metrics.heightPixels/2
-        chatView.requestLayout();
+        chatView.requestLayout()
+        setSystemUIListener()
 
         binding.closeButton.setOnClickListener {
             findNavController().navigateUp()
@@ -77,6 +79,19 @@ class BroadcastFragment : FullScreenFragment() {
             } else {
                 Snackbar.make(requireView(), "Permissions not granted by the user.", Snackbar.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun setSystemUIListener() {
+        activity?.window?.decorView?.setOnSystemUiVisibilityChangeListener { visibility ->
+            val layoutParams = view?.layoutParams as FrameLayout.LayoutParams?
+            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+                // The system bars are visible
+                layoutParams?.bottomMargin = resources.getDimension(R.dimen.full_screen_bottom_margin_space).toInt()
+            } else {
+                layoutParams?.bottomMargin = 0
+            }
+            view?.layoutParams = layoutParams
         }
     }
 }
