@@ -1,41 +1,46 @@
 package com.rafaelperez.videoplayer.ui
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
 import android.widget.FrameLayout
-import android.widget.MediaController
-import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import com.rafaelperez.videoplayer.R
 import com.rafaelperez.videoplayer.databinding.FragmentVideoPlayerBinding
 
 
 class VideoPlayerFragment : FullScreenFragment() {
     private lateinit var binding: FragmentVideoPlayerBinding
-    private var currentPosition = 0
     private val args: VideoPlayerFragmentArgs by navArgs()
 
-    companion object {
-        private const val PLAYBACK_TIME = "play_time";
-    }
+    var playerView: PlayerView? = null
+    private var player: SimpleExoPlayer? = null
+    private var playWhenReady = true
+    private var currentWindow = 0
+    private var playbackPosition: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video_player, container, false)
-        if (savedInstanceState != null) {
-            currentPosition = savedInstanceState.getInt(PLAYBACK_TIME)
-        }
-        val controller = MediaController(requireContext())
-        controller.setMediaPlayer(binding.videoView)
-        binding.videoView.setMediaController(controller)
+
+        playerView = binding.playerView
+        playerView!!.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM;
+
         val chatView = binding.chatVideo
         val metrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
@@ -50,57 +55,78 @@ class VideoPlayerFragment : FullScreenFragment() {
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(PLAYBACK_TIME, binding.videoView.currentPosition)
+    private fun initializePlayer() {
+        if (player == null) {
+            val trackSelector = DefaultTrackSelector()
+            trackSelector.setParameters(trackSelector.buildUponParameters().setMaxVideoSizeSd())
+            player = ExoPlayerFactory.newSimpleInstance(context, trackSelector)
+        }
+        playerView!!.player = player
+        val uri = Uri.parse(args.videoUrl)
+        val mediaSource: MediaSource = buildMediaSource(uri)
+        player!!.playWhenReady = playWhenReady
+        player!!.seekTo(currentWindow, playbackPosition)
+        player!!.prepare(mediaSource, false, false)
+    }
+
+    private fun buildMediaSource(uri: Uri): MediaSource {
+        val dataSourceFactory: DataSource.Factory =
+            DefaultDataSourceFactory(context, "exoplayer-codelab")
+        val url = uri.path
+        return if (url!!.contains(".m3u8")) {
+            val mediaSourceFactory = HlsMediaSource.Factory(dataSourceFactory)
+            mediaSourceFactory.createMediaSource(uri)
+        } else {
+            ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        initializePlayer()
+        if (Util.SDK_INT >= 24) {
+            initializePlayer()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideSystemUi()
+        if (Util.SDK_INT < 24 || player == null) {
+            initializePlayer()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            binding.videoView.pause();
+        if (Util.SDK_INT < 24) {
+            releasePlayer()
         }
     }
 
     override fun onStop() {
         super.onStop()
-        releasePlayer()
-    }
-
-    private fun initializePlayer() {
-        binding.videoStatus.visibility = VideoView.VISIBLE
-        val videoPath: Uri? = getMedia(args.videoUrl)
-        if (videoPath!=null) {
-            binding.videoView.setVideoPath(args.videoUrl)
-            binding.videoView.setOnPreparedListener {
-                binding.videoStatus.visibility = VideoView.INVISIBLE
-                if (currentPosition>0) {
-                    binding.videoView.seekTo(currentPosition)
-                } else {
-                    binding.videoView.seekTo(1)
-                }
-                binding.videoView.start()
-                binding.chatVideo.initTimer()
-            }
-            binding.videoView.setOnCompletionListener {
-                binding.videoView.seekTo(0)
-            }
-        } else {
-            Snackbar.make(binding.root, "Invalid url", Snackbar.LENGTH_SHORT).show()
+        if (Util.SDK_INT >= 24) {
+            releasePlayer()
         }
     }
 
-    private fun getMedia(mediaName: String) : Uri? {
-        return if (URLUtil.isValidUrl(mediaName)) Uri.parse(mediaName) else null
+    private fun hideSystemUi() {
+        playerView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 
     private fun releasePlayer() {
-        binding.videoView.stopPlayback()
+        if (player != null) {
+            playWhenReady = player!!.playWhenReady
+            playbackPosition = player!!.currentPosition
+            currentWindow = player!!.currentWindowIndex
+            player!!.release()
+            player = null
+        }
     }
 
     private fun setSystemUIListener() {
